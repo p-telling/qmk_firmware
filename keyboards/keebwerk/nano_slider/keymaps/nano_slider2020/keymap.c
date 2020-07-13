@@ -25,6 +25,7 @@ uint16_t alt_tab_timer = 0;
 enum layer_names {
     _BASE,
     _FN,
+    _MEDIA
 };
 
 // Defines the keycodes used by our macros in process_record_user
@@ -39,13 +40,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT(
         TG(1),
         KC_PAUSE,    ALT_TAB,   LGUI(KC_C),
-        KC_SCROLLLOCK,    ALT_STAB,    LGUI(KC_V),    LGUI(LCTL(KC_Q)))
+        KC_SCROLLLOCK,    ALT_STAB,    LGUI(KC_V),    LGUI(LCTL(KC_Q))
     ),
     [_FN] = LAYOUT(
         TG(1),
         KC__VOLDOWN, KC__MUTE,  KC__VOLUP,
-        KC_MEDIA_REWIND,  KC_MEDIA_PLAY_PAUSE,KC_MEDIA_FAST_FORWARD, LGUI(LCTL(KC_Q)))
-    ),
+        KC_MEDIA_REWIND,  KC_MEDIA_PLAY_PAUSE, KC_MEDIA_FAST_FORWARD, LGUI(LCTL(KC_Q))
+    ),    
+        [_MEDIA] = LAYOUT(
+        TO(_BASE),
+        KC_VOLD, KC_VOLU, KC_F24,
+        KC_MRWD, KC_MFFD, KC_F23, KC_MPLY
+    )
+};
    
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -80,16 +87,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 
-void matrix_scan_user(void) {     
-  if (is_alt_tab_active) {
-    if (timer_elapsed(alt_tab_timer) > 500) {
-      unregister_code(KC_LGUI);
-      unregister_code(KC_LSHIFT);
-          is_alt_tab_active = false;
-    }
-  }
-}
-
 uint8_t divisor = 0;
 
 void slider(void) {
@@ -101,5 +98,13 @@ void slider(void) {
 }
 
 void matrix_scan_user(void) {
-    slider();
+  if (is_alt_tab_active) {
+    if (timer_elapsed(alt_tab_timer) > 500) {
+      unregister_code(KC_LGUI);
+      unregister_code(KC_LSHIFT);
+          is_alt_tab_active = false;
+    }
+  }
+  slider();
 }
+
