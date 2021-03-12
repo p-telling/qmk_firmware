@@ -38,14 +38,14 @@ enum custom_keycodes {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* Base */
     [_BASE] = LAYOUT(
-        TG(1),
+        KC__MUTE,
         KC_PAUSE,    ALT_TAB,   LGUI(KC_C),
-        KC_SCROLLLOCK,    ALT_STAB,    LGUI(KC_V),    LGUI(LCTL(KC_Q))
+        KC_SCROLLLOCK,    ALT_STAB,    LGUI(KC_V), TG(1)
     ),
     [_FN] = LAYOUT(
-        TG(1),
-        KC__VOLDOWN, KC__MUTE,  KC__VOLUP,
-        KC_MEDIA_REWIND,  KC_MEDIA_PLAY_PAUSE, KC_MEDIA_FAST_FORWARD, LGUI(LCTL(KC_Q))
+        KC__MUTE,
+        LGUI(KC_F2), LGUI(KC_F3),  LGUI(LCTL(KC_Q)),
+        KC_MEDIA_REWIND,  KC_MEDIA_PLAY_PAUSE, KC_MEDIA_FAST_FORWARD, TG(1)
     ),    
         [_MEDIA] = LAYOUT(
         TO(_BASE),
