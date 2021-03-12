@@ -87,16 +87,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 
-uint8_t divisor = 0;
-
+uint8_t last_read = 0;
+ 
 void slider(void) {
-    if (divisor++) { // only run the slider function 1/256 times it's called
-        return;
+    uint8_t current_read = (analogReadPin(SLIDER_PIN) +last_read)/8; //filter strength
+ 
+    if (current_read != last_read ) {
+        midi_send_cc(&midi_device, 2, 0x3E, 0x7F - (analogReadPin(SLIDER_PIN) >>3));
+ 
+    last_read = current_read;
     }
-
-    midi_send_cc(&midi_device, 2, 0x3E, 0x7F - (analogReadPin(SLIDER_PIN) >> 3));
+ 
 }
 
+ 
 void matrix_scan_user(void) {
   if (is_alt_tab_active) {
     if (timer_elapsed(alt_tab_timer) > 500) {
